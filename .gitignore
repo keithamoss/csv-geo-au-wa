@@ -1,0 +1,9 @@
+app/tmp/*
+app/testtest.gdb/*
+app/*.pyc
+app/bp.json
+data/*.mrf
+data/ogrext.so
+rfr*.csv
+rfr*.json
+test.json

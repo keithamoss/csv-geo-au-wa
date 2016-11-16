@@ -1,0 +1,63 @@
+{
+    "comments": "Matching takes place in the order defined in this file. Place code matches before name matches, and smaller regions before larger ones.",
+    "regionsMap": {
+        "WA_TOWNSITES": {
+            "layerPath": "admin-boundaries/townsites.gpkg",
+            "locatorName": "Town",
+            "regionProp": "townsite_name",
+            "aliases": [
+                
+            ],
+            "spatialProp": "name",
+            "digits": 11,
+            "description": "Western Australian Townsites",
+            "datasetLink": "http://catalogue.beta.data.wa.gov.au/dataset/townsites-lgate-007"
+        },
+        "WA_LGAS": {
+            "layerPath": "admin-boundaries/lgas_singlepoly.gpkg",
+            "locatorName": "LGA",
+            "regionProp": "lga_name",
+            "aliases": [
+                
+            ],
+            "spatialProp": "name",
+            "digits": 11,
+            "humanFriendlyNameReplacement": [
+                "^([A-z-\\s]+),\\s((SHIRE|CITY|TOWN))\\sOF$",
+                "\\2 of \\1"
+            ],
+            "description": "Western Australian LGAs",
+            "datasetLink": "http://catalogue.beta.data.wa.gov.au/dataset/townsites-lgate-007"
+        },
+        "WA_REGIONS": {
+            "layerPath": "admin-boundaries/regions_mainland.gpkg",
+            "locatorName": "Region",
+            "regionProp": "region_name",
+            "aliases": [
+                
+            ],
+            "spatialProp": "short_name",
+            "digits": 11,
+            "dataReplacements": [
+                [
+                    "Mid West",
+                    "Midwest"
+                ]
+            ],
+            "description": "Western Australian Regions (Mainland geometry only)",
+            "datasetLink": "http://catalogue.beta.data.wa.gov.au/dataset/townsites-lgate-007"
+        },
+        "WA_STATE": {
+            "layerPath": "admin-boundaries/mainland_coastline_simplified.gpkg",
+            "locatorName": "State",
+            "regionProp": "locator",
+            "aliases": [
+                
+            ],
+            "spatialProp": "locator",
+            "digits": 11,
+            "description": "Western Australian State Boundary (Mainland geometry only)",
+            "datasetLink": "http://catalogue.beta.data.wa.gov.au/dataset/townsites-lgate-007"
+        }
+    }
+}

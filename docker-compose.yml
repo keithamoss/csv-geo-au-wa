@@ -1,0 +1,24 @@
+# data:
+#   image: debian:jessie
+#   volumes:
+    # - ./:/app
+    # - ./data/dev:/data
+    # - ./data/recipes:/recipes
+
+# shares volume with other images so we can use COPY
+# uwsgi:
+#   build: backend/
+#   volumes_from:
+#     - data
+#   links:
+#    - db
+#   ports:
+#     - "9000"
+
+nginx:
+  build: .
+  volumes:
+    - ./app:/app
+    - ./data:/data
+  ports:
+    - "80:80"
