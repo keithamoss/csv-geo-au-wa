@@ -116,6 +116,19 @@ def get_file(version, filename):
         as_attachment=True
     )
 
+@app.route('/<version>/get_csv_column_names', methods=['POST'])
+def get_csv_column_names(version):
+    from StringIO import StringIO
+    import pandas as pd
+
+    logger.clear()
+
+    # Grab a Pandas DataFrame from our blob of request data
+    df = pd.read_csv(request.files['csvFile'], encoding="iso-8859-1")
+
+    return jsonify(list(df.columns.values))
+
+
 @app.route("/<version>/get_capabilities")
 def getcapabilities(version):
     from csvgeoauwa import RegionMapping
