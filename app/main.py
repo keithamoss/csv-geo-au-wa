@@ -31,7 +31,7 @@ logger = CustomLogger()
 # Handle surfacing warnings for requests via Flask
 @app.after_request
 def after(response):
-    if len(logger.logs) > 0:
+    if len(logger.logs) > 0 and response.headers["Content-type"] == "application/json":
         body = json.loads(response.get_data())
         body["warning"] = True
         body["warnings"] = logger.logs
