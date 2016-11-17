@@ -116,6 +116,139 @@ def get_file(version, filename):
         as_attachment=True
     )
 
+@app.route("/<version>/get_capabilities")
+def getcapabilities(version):
+    from csvgeoauwa import RegionMapping
+    rm = RegionMapping()
+    rm.loadRegionMapping()
+
+    return jsonify({
+        "spatialType": [
+            "latlon",
+            "regions"
+        ],
+        "drivers": fiona.supported_drivers,
+        "regions": rm.regionMapping["regionsMap"],
+        "converters": [
+            {
+                "name": "removeNewLines",
+                "description": "Remove all line breaks from the contents of this column."
+            },
+            {
+                "name": "replaceNewLinesWithHTMLBreak",
+                "description": "Replace all line breaks with the HTML line break <br>."
+            },
+            {
+                "name": "replaceNewLinesWithWhitespace",
+                "description": "Replace all line breaks with a single space."
+            },
+            {
+                "name": "trimWhitespace",
+                "description": "Trim all whitespace from the beginning and end of the contents of this column."
+            }
+        ],
+        "qaRules": [
+            {
+                "name": "valueConstrainedByList",
+                "description": "Limit the contents of this column to a pre-defined set of values. (e.g. A list of know themes like Education, Health, Environment, ...)",
+                "fields": [
+                    {
+                        "name": "colName",
+                        "description": "Column Name",
+                        "type": "column-select",
+                        "multiple": False,
+                        "required": True
+                    },
+                    {
+                        "name": "validValues",
+                        "description": "Values",
+                        "type": "chips-textbox",
+                        "required": True
+                    }
+                ]
+            },
+            {
+                "name": "valueContrainedBySpatialRegion",
+                "description": "Limit the contents of this column to a pre-defined set of region names. (e.g. Must be a townsite name, or the name of a local government area.)",
+                "fields": [
+                    {
+                        "name": "colName",
+                        "description": "Column Name",
+                        "type": "column-select",
+                        "multiple": False,
+                        "required": True
+                    },
+                    {
+                        "name": "regionId",
+                        "description": "Region Name",
+                        "type": "region-select",
+                        "required": True
+                    }
+                ]
+            },
+            {
+                "name": "valueContrainedByGeoJSON",
+                "description": "Limit the contents of this dataset to a given geographic area. (e.g. All points in this dataset should be in Western Australia.)",
+                "fields": [
+                    {
+                        "name": "geojsonFeature",
+                        "description": "Geographic Area",
+                        "type": "area-select-map-widget-geojson",
+                        "required": True
+                    }
+                ]
+            }
+        ],
+        "postProcessingRules": [
+            {
+                "name": "humanFriendlyRegionNames",
+                "description": "Transform the contents of region names column into a human-readable representation of the name. (e.g. 'MANDURAH, CITY OF' -> 'City of Mandurah')",
+                "fields": [
+                    {
+                        "name": "colName",
+                        "description": "Column Name",
+                        "type": "column-select",
+                        "multiple": False,
+                        "required": True
+                    },
+                    {
+                        "name": "regionId",
+                        "description": "Region Name",
+                        "type": "region-select",
+                        "required": True
+                    }
+                ]
+            },
+            {
+                "name": "simplifyGeometry",
+                "description": "Apply a simpification algorithm to the spatial boundaries of regions. (e.g. Remove complexity from a coastline dataset to reduce the size of the resulting file.)",
+                "fields": [
+                    {
+                        "name": "tolerance",
+                        "description": "Tolerance",
+                        "type": "range",
+                        "min": 0,
+                        "max": 1,
+                        "required": True
+                    }
+                ]
+            },
+            {
+                "name": "dropColumns",
+                "description": "Remove the given columns from the dataset after processing. (e.g. Remove the unnecessary 'lat' and 'lon' columns.)",
+                "fields": [
+                    {
+                        "name": "colName",
+                        "description": "Column Name",
+                        "type": "column-select",
+                        "multiple": True,
+                        "required": True
+                    }
+                ]
+            }
+        ]
+    })
+
 @app.route('/ogr2ogr', methods=['POST'])
 def ogr2ogr():
     # return jsonify({'foo': 'bar1'}), 200
