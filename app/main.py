@@ -40,6 +40,7 @@ def after(response):
 
 @app.route("/hello")
 def hello():
+    logger.clear()
     return "Hello World from Flask (default)"
 
 @app.route('/<version>/spatialise', methods=['POST'])
