@@ -1,10 +1,13 @@
-import os
 from flask import Flask, request, abort, jsonify, send_file, send_from_directory, make_response
+from flask_cors import CORS, cross_origin
+import os
 import fiona
 import json
 import csvgeoauwa
 
 app = Flask(__name__)
+CORS(app)
+
 TMP_DIR = os.path.join(os.getcwd(), "tmp")
 
 # Yes, this should be proper Python logging. One day.

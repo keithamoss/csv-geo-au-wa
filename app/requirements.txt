@@ -3,3 +3,4 @@ pandas
 shapely
 chardet
 geopandas
+flask-cors
