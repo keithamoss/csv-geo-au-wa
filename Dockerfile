@@ -17,6 +17,7 @@ COPY nginx.conf /etc/nginx/conf.d/
 # Copy sample app
 # COPY app /app
 ADD ./app /app
+ADD ./data /data
 
 # Setup Python requirements
 WORKDIR /app
