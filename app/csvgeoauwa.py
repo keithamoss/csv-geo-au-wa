@@ -262,11 +262,37 @@ class dataset(object):
             if os.path.exists(zipfileOutPath + ".zip"):
                 os.remove(zipfileOutPath + ".zip")
 
+            # Hacky workaround for https://github.com/Toblerity/Fiona/issues/388
+            # until the next version of Fiona ships
+            bolFileGDBHack = False
+            if cfg["driver"] == "FileGDB":
+                print "Switching to (initial temporary) GeoJSON output for FileGDB."
+                bolFileGDBHack = True
+                
+                cfg["driver"] = "GeoJSON"
+                fileOutPath = fileOutPath.replace(".gdb", ".json")
+
             geoDataFrame.to_file(
                 fileOutPath, 
                 driver=cfg["driver"]
             )
-            print "GeoDataFrame written to disk {}.".format(fileOutPath)
+            print "GeoDataFrame written to disk {}".format(fileOutPath)
+
+            if bolFileGDBHack == True:
+                print "Calling ogr2ogr to convert initial GeoJSON to FileGDB."
+                cfg["driver"] = "FileGDB"
+
+                import subprocess
+
+                command = ["ogr2ogr", 
+                        "-f", "FileGDB",
+                        fileOutPath.replace(".json", ".gdb"), fileOutPath]
+                subprocess.check_call(command)
+                
+                # Remove temporary GeoJSON version
+                os.remove(fileOutPath)
+
+                fileOutPath = fileOutPath.replace(".json", ".gdb")
 
             # Zip 'em
             shutil.make_archive(zipfileOutPath, "zip", outDir)
