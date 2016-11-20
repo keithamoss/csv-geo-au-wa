@@ -258,7 +258,11 @@ class dataset(object):
             # print infer_schema(geoDataFrame)
 
             if os.path.exists(fileOutPath):
-                os.remove(fileOutPath)
+                if os.path.isdir(fileOutPath):
+                    import shutil
+                    shutil.rmtree(fileOutPath, ignore_errors=True)
+                else:
+                    os.remove(fileOutPath)
             if os.path.exists(zipfileOutPath + ".zip"):
                 os.remove(zipfileOutPath + ".zip")
 
