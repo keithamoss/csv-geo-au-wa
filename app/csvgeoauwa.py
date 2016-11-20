@@ -259,7 +259,6 @@ class dataset(object):
 
             if os.path.exists(fileOutPath):
                 if os.path.isdir(fileOutPath):
-                    import shutil
                     shutil.rmtree(fileOutPath, ignore_errors=True)
                 else:
                     os.remove(fileOutPath)
