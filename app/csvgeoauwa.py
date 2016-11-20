@@ -259,10 +259,13 @@ class dataset(object):
 
             if os.path.exists(fileOutPath):
                 if os.path.isdir(fileOutPath):
+                    print "Deleting directory {}".format(fileOutPath)
                     shutil.rmtree(fileOutPath, ignore_errors=True)
                 else:
+                    print "Deleting file {}".format(fileOutPath)
                     os.remove(fileOutPath)
             if os.path.exists(zipfileOutPath + ".zip"):
+                print "Deleting zip file {}".format(zipfileOutPath + ".zip")
                 os.remove(zipfileOutPath + ".zip")
 
             # Hacky workaround for https://github.com/Toblerity/Fiona/issues/388
@@ -298,6 +301,8 @@ class dataset(object):
                 fileOutPath = fileOutPath.replace(".json", ".gdb")
 
             # Zip 'em
+            print "shutil.makearchive({}, \"zip\", {})".format(zipfileOutPath, outDir)
+            print type(shutil)
             shutil.make_archive(zipfileOutPath, "zip", outDir)
             print "GeoDataFrame zipped."
 
